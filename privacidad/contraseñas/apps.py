@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class MensajesConfig(AppConfig):
+class ContraseñasConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'mensajes'
+    name = 'contraseñas'

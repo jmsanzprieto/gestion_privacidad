@@ -16,16 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from mensajes.views import MessageViewSet# importamos simplejwt
 from rest_framework_simplejwt import views as jwt_views
 
-# Define las URLs para tus vistas de Django REST Framework
-router = routers.DefaultRouter()
-router.register(r'mensajes', MessageViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls)),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('users/', include('users.urls')),
+    path('passwords/', include('contraseñas.urls')),
+    
 ]

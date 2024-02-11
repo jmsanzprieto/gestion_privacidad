@@ -39,15 +39,39 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         return response
 
 
+# class LogoutView(APIView):
+#     permission_classes = (IsAuthenticated,)
+
+#     def post(self, request):
+#         try:
+#             refresh_token = request.data["refresh"]
+#             token = RefreshToken(refresh_token)
+#             token.blacklist()
+
+#             return Response(status=status.HTTP_205_RESET_CONTENT)
+#         except Exception as e:
+#             return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+
 class LogoutView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         try:
-            refresh_token = request.data["refresh"]
-            token = RefreshToken(refresh_token)
-            token.blacklist()
+            # Obtener el token de actualización desde la solicitud
+            refresh_token = request.data.get("refresh")
 
-            return Response(status=status.HTTP_205_RESET_CONTENT)
+            # Si se proporciona un token de actualización
+            if refresh_token:
+                # Desactivar el token de actualización para invalidarlo
+                token = RefreshToken(refresh_token)
+                token.blacklist()
+
+                # Devolver una respuesta exitosa
+                return Response({"message": "Sesión cerrada exitosamente"}, status=status.HTTP_205_RESET_CONTENT)
+            else:
+                # Devolver un error si no se proporciona un token de actualización
+                return Response({"error": "Se necesita el token de actualización"}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            # Devolver un error si hay algún problema durante el proceso
+            return Response({"error": "Error al cerrar sesión"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

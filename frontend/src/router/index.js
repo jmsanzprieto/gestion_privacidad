@@ -1,19 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import Login from '@/views/Login.vue'
+import Dashboard from '@/views/Dashboard.vue'
+import Error403 from '@/views/Error403.vue'
+import auth from "@/logic/auth";
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    name: 'login',
+    component: Login
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/Dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/error-403',
+    name: 'Error403',
+    component: Error403
+  },
+  {
+    path: '/:catchAll(.*)',
+    redirect: { name: 'Error403' }
   }
 ]
 
@@ -21,5 +31,17 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+router.beforeEach(async (to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!auth.isAuthenticated()) {
+      next('/error-403'); // Redirige a la página de error 403 si el usuario no está autenticado
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 
 export default router

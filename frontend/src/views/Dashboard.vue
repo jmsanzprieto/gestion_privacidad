@@ -5,29 +5,30 @@
    
     
     <!-- Formulario para agregar nueva contraseña -->
-    <div v-if="showForm">
-      <h4>Agregar Nueva Contraseña</h4>
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <form @submit.prevent="addNewPassword" class="d-flex">
-            <div class="col-md-6 mb-3">
-              <label for="service" class="form-label">Servicio:</label>
-              <input class="form-control" type="text" id="service" v-model="newPassword.service" required>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="password" class="form-label">Contraseña:</label>
-              <input class="form-control" type="password" id="password" v-model="newPassword.password" required>
-            </div>
-            <div class="row justify-content-center">
-            <div class="col-md-12 mt-3">
-              <button type="submit" class="btn btn-primary">Guardar</button>
-              </div>
-            </div>
-          </form>
+    <div v-if="showForm" class="container card">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h4 class="text-center">Cargar Contraseña</h4>
+      <form @submit.prevent="addNewPassword" class="row g-3">
+        <div class="col-md-5">
+          <label for="service" class="form-label">Servicio:</label>
+          <input class="form-control" type="text" id="service" v-model="newPassword.service" required>
         </div>
-      </div>
-        
+        <div class="col-md-5">
+          <label for="password" class="form-label">Contraseña:</label>
+          <input class="form-control" type="password" id="password" v-model="newPassword.password" required>
+        </div>
+        <div class="col-md-2 mt-auto">
+          <button type="submit" class="btn btn-primary" style="width: 100%">Guardar</button>
+        </div>
+      </form>
     </div>
+  </div>
+</div>
+
+
+
+
 
     <!-- Tabla para mostrar las contraseñas -->
     <table class="table">
@@ -150,6 +151,6 @@ export default {
 };
 </script>
 
-<style>
-
+<style scooped>
+ .card{background-color: #f0f0f1; padding:10px;margin-top:10px}
 </style>
